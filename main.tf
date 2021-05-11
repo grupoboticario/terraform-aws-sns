@@ -23,3 +23,37 @@ resource "aws_sns_topic" "this" {
 
   tags = var.tags
 }
+
+resource "aws_iam_policy" "policy" {
+  name        = "access-${lower(var.username)}-${lower(var.name)}-sns"
+  description = "Full access to the resource SNS"
+  policy      = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "sns:Publish",
+        "sns:ListTopics",
+        "sns:Unsubscribe",
+        "sns:Subscribe",
+        "SNS:GetTopicAttributes",
+        "SNS:SetTopicAttributes",
+        "SNS:ListSubscriptionsByTopic",
+        "sns:ConfirmSubscription"
+      ],
+      "Resource": [
+        "${aws_sns_topic.this.arn}"
+      ]
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy_attachment" "policy-attach" {
+  name       = "${lower(var.username)}-${lower(var.name)}-attachment"
+  users      = [var.username]
+  policy_arn = "${aws_iam_policy.policy.arn}"
+}
