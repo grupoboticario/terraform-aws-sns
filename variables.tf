@@ -10,6 +10,12 @@ variable "name" {
   default     = null
 }
 
+variable "username" {
+  description = "The name of the IAM username"
+  type        = string
+  default     = null
+}
+
 variable "name_prefix" {
   description = "The prefix name of the SNS topic to create"
   type        = string
