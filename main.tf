@@ -44,7 +44,7 @@ resource "aws_iam_policy" "policy" {
         "sns:ConfirmSubscription"
       ],
       "Resource": [
-        "${aws_sns_topic.this.arn}"
+        "${aws_sns_topic.this[0].arn}"
       ]
     }
   ]
